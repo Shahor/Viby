@@ -4,7 +4,7 @@ require 'URI'
 require 'open-uri'
 require 'nokogiri'
 
-class Older
+class Videos
 	include Cinch::Plugin
 
 	listen_to :channel, method: :query
