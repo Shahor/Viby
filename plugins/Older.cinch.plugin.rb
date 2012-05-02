@@ -36,6 +36,12 @@ class Older
 
 		if urls.any?
 			urls.each do |url|
+				begin
+					return if not URI.parse(url).scheme === 'http'
+				rescue
+					return
+				end
+
 				if _isOld? url
 					m.reply Pictures.sample if _addPicture?
 					m.reply Sentences.sample % @linksToOld[url]
