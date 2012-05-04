@@ -22,7 +22,9 @@ class Videos
 
 				infos = _query url
 
-				m.reply "%{title}, posted by %{author}" % infos
+				if infos.any?
+					m.reply "%{title}, posted by %{author}" % infos
+				end
 			end
 		end
 	end
