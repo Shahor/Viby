@@ -4,7 +4,7 @@ require 'open-uri'
 require 'nokogiri'
 require 'URI'
 
-class Older
+class Twitter
 	include Cinch::Plugin
 
     match /twitter.com/, :use_prefix => false
