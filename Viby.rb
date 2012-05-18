@@ -23,7 +23,7 @@ bot = Cinch::Bot.new do
 		c.nick = "__VALUE__"
 		c.server = "__VALUE__"
 		c.channels = ["__VALUE__"]
-		c.password = '__VALUE__'
+		c.password = "__VALUE__"
 		c.ssl = Cinch::Configuration::SSL.new use: true
 		c.plugins.plugins = pluginsToLoad
 	end
