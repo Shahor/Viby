@@ -37,7 +37,7 @@ class Older
 		if urls.any?
 			urls.each do |url|
 				begin
-					return if not URI.parse(url).scheme === 'http'
+					return if not URI.parse(url).scheme =~ /http/
 				rescue
 					return
 				end
