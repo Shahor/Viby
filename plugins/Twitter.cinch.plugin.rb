@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 require 'cinch'
 require 'open-uri'
-require 'nokogiri'
 require 'URI'
+require 'json'
+require 'curb'
 
 class Twitter
 	include Cinch::Plugin
@@ -17,11 +18,27 @@ class Twitter
     			return if not url.scheme =~ /http/
     			return if not url.to_s =~ /twitter.com\//
 
-    			twit = Nokogiri::HTML(open url.to_s)
-    			author = twit.css('meta[name=page-user-screen_name]').attribute('content').value
-    			content = twit.css('meta[name=description]').attribute('content').value
-    			m.reply "#{author} (https://twitter.com/#{author}) said : "
-    			m.reply content
+                begin
+
+                    statusId = url.to_s.match(/status\/(\d*)/)[1]
+
+                    data = JSON.parse(Curl::Easy.perform("https://api.twitter.com/1/statuses/show.json?id=#{statusId}").body_str)
+
+                    author = data['user']['screen_name']
+        			fullname = data['user']['name']
+        			content = data['text']
+
+        			m.reply "#{fullname} (https://twitter.com/#{author}) said : "
+        			m.reply content
+
+                    if not data['retweeted_status'].nil?
+                        originalUser = data['retweeted_status']['user']['screen_name']
+                        originalTwit = "https://twitter.com/#{originalUser}/status/#{data['retweeted_status']['id_str']}"
+                        m.reply "This is a retweet from #{originalUser} (#{originalTwit})"
+                    end
+                rescue
+                   m.reply "I'm zorry, can't parse this twit properly..."
+                end
     		end
     	end
     end
