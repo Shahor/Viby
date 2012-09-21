@@ -26,9 +26,9 @@ class TwitterParser
     			return if not url.to_s =~ /twitter.com\//
 
                 begin
+                    statusId = url.to_s.match(/status(es)?\/(\d*)/)[2]
 
-                    statusId = url.to_s.match(/status\/(\d*)/)[1]
-
+                    puts "statusId is #{statusId}"
                     data = Twitter.status statusId
                     author = data['user']['screen_name']
                     fullname = data['user']['name']
