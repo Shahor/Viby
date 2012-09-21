@@ -23,7 +23,7 @@ class BeerTime
         "http://www.beer-universe.com/images/articles/357/beer_food_bazaar.jpg"
     ]
 
-    match / (beer|biere|bières|bière|boire|beers)/i, :use_prefix => false
+    match /((^\s*)|(\s))(beer|biere|bières|bière|boire|beers)/i, :use_prefix => false
 
     def execute m
         if Time.now.hour <= 17 and Time.now.hour >= 2
