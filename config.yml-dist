@@ -1,0 +1,7 @@
+nick: viby
+server: localhost
+channels:
+ - '#viby'
+# password: something
+# ssl: true
+
