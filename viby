@@ -31,6 +31,9 @@ if File.exists? configFile
       c.channels = config['channels'] || ['#viby']
       c.password = config['password']
       c.ssl = Cinch::Configuration::SSL.new use: true if config['ssl']
+      for name, cplugin in config['plugin'] || []
+        c.plugins.options[Kernel.const_get name] = cplugin
+      end
       c.plugins.plugins = plugins
     end
   end
