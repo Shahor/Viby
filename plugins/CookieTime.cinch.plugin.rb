@@ -19,6 +19,7 @@ class CookieTime
   ]
 
   YAY = [
+    "https://dl.dropbox.com/u/1543763/pics/netvibes/3r6jnv.jpeg",
     "http://cl.ly/1K1p3Q2I3c0H21323B3R/Screen%20Shot%202012-05-03%20at%204.12.54%20PM.png",
     "http://cl.ly/1J403y3N0r3K25120Y2M/Screen%20Shot%202012-05-03%20at%204.13.31%20PM.png",
     "http://cl.ly/2r1j1N140x3y0G0I3Q0h/Screen%20Shot%202012-05-03%20at%204.14.15%20PM.png",
