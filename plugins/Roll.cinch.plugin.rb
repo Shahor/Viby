@@ -1,6 +1,6 @@
 #BUG 1dO
 
-class DiceRoll
+class Roll
   include Cinch::Plugin
 
   # [[<repeats>#]<rolls>]d<sides>

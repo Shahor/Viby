@@ -2,7 +2,7 @@
 require 'open-uri'
 require 'json'
 
-class TwitterParser
+class Twitter
   include Cinch::Plugin
 
   match /twitter.com/, :use_prefix => false

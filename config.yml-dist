@@ -5,6 +5,6 @@ channels:
 # password: something
 # ssl: true
 # plugin:
-#    WolframAnswer:
+#    Question:
 #        appid: XXX
 

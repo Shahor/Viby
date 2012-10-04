@@ -2,7 +2,7 @@
 require 'json'
 require 'curb'
 
-class BeerTime
+class Beer
   include Cinch::Plugin
 
   NOPE = [

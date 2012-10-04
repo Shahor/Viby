@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'wolfram'
 
-class WolframAnswer
+class Question
   include Cinch::Plugin
 
   match /question (.*)\?$/i

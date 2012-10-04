@@ -2,7 +2,7 @@
 require 'json'
 require 'curb'
 
-class CookieTime
+class Cookie
   include Cinch::Plugin
 
   NOPE = [
