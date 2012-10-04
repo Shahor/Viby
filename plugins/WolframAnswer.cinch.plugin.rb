@@ -4,7 +4,7 @@ require 'wolfram'
 class WolframAnswer
   include Cinch::Plugin
 
-  match(/^ponette,?(.*)\?$/i, :use_prefix => false)
+  match /question (.*)\?$/i
 
   def initialize(*args)
     super
