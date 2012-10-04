@@ -2,7 +2,7 @@ class DiceRoll
   include Cinch::Plugin
 
   # [[<repeats>#]<rolls>]d<sides>[<+/-><offset>]
-  match /roll (?:(?:(\d+)#)?(\d+))?(d|D)(\d+)(?:([+-])(\d+))?/, :use_prefix => false
+  match /roll (?:(?:(\d+)#)?(\d+))?(?:d|D)(\d+)(?:([+-])(\d+))?/, :use_prefix => false
 
   def execute(m, repeats, rolls, sides, offset_op, offset)
     repeats = repeats.to_i
