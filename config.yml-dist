@@ -4,4 +4,7 @@ channels:
  - '#viby'
 # password: something
 # ssl: true
+# plugin:
+#    WolframAnswer:
+#        appid: XXX
 
