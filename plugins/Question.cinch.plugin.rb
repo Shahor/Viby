@@ -22,7 +22,7 @@ class Question
       end
     end
     response = response.to_s.gsub(/\[[^\]]*\.\.\.\],?/, '') # remove messages [Some text...]
-    if response == ''
+    if response.empty?
       response = 'I have no response for you :('
     end
     m.reply "#{m.user.nick}: #{response}"
