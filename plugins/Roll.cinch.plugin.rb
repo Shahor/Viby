@@ -1,5 +1,3 @@
-#BUG 1dO
-
 class Roll
   include Cinch::Plugin
 
