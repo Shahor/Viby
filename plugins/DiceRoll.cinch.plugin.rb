@@ -1,22 +1,27 @@
+#BUG 1dO
+
 class DiceRoll
   include Cinch::Plugin
 
-  # [[<repeats>#]<rolls>]d<sides>[<+/-><offset>]
-  match /roll (?:(?:(\d+)#)?(\d+))?(?:d|D)(\d+)(?:([+-])(\d+))?/, :use_prefix => false
+  # [[<repeats>#]<rolls>]d<sides>
+  match /roll (?:(?:(\d+)#)?(\d+))?(?:d|D)(\d+)/
 
-  def execute(m, repeats, rolls, sides, offset_op, offset)
-    repeats = repeats.to_i
-    repeats = 1 if repeats < 1
-    rolls   = rolls.to_i
-    rolls   = 1 if rolls < 1
+  set :help => "!roll [[<repeats>#]<rolls>]d<sides>"
+
+  def execute(m, repeats, rolls, sides)
+    repeats = (repeats || 1).to_i
+    rolls = (rolls || 1).to_i
+    sides = (sides || 1).to_i
+
+    if repeats < 1 or repeats > 10 or rolls < 1 or rolls > 10 or sides < 1 or sides > 100
+      m.reply "Hey #{m.user.nick}, U MAD BRO !"
+      return
+    end
 
     repeats.times do
       total = 0
       rolls.times do
-        score = rand(sides.to_i) + 1
-        if offset_op
-          score = score.send(offset_op, offset.to_i)
-        end
+        score = rand(sides) + 1
         total += score
       end
       m.reply "Hey #{m.user.nick} ! Your dice roll is: #{total}"
