@@ -4,7 +4,7 @@ require 'wolfram'
 class Question
   include Cinch::Plugin
 
-  match /question (.*)\?$/i
+  match(/question (.*)\??$/i)
 
   def initialize(*args)
     super
@@ -22,6 +22,9 @@ class Question
       end
     end
     response = response.to_s.gsub(/\[[^\]]*\.\.\.\],?/, '') # remove messages [Some text...]
-    m.reply response
+    if response == ''
+      response = 'I have no response for you :('
+    end
+    m.reply "#{m.user.nick}: #{response}"
   end
 end
