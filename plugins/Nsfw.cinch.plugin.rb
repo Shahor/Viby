@@ -7,7 +7,7 @@ require 'open-uri'
 class Nsfw
     include Cinch::Plugin
 
-    set help: "just type in '!nsfw' and I will provide"
+    set :help => "just type in '!nsfw' and I will provide"
 
     SOURCES = [
         "underboob",
