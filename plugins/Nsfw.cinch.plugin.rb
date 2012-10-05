@@ -18,7 +18,6 @@ class Nsfw
         "hugeboobs",
         "randomsexiness",
         "tittydrop",
-        "boobbounce",
         "NSFWFunny",
     ]
     match /nsfw$/i, :use_prefix => true
