@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class Joke
+class Team
   include Cinch::Plugin
 
   match /(?:team|quake|q3|ctf) ((?:[\w\-]+\s*)+)/i
