@@ -7,4 +7,5 @@ channels:
 # plugin:
 #    Question:
 #        appid: XXX
-
+#    Nsfw:
+#        reddit_cookie: XXX
