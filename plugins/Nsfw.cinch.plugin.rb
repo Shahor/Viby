@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-require 'nokogiri'
 require 'open-uri'
 
 class Nsfw
@@ -8,34 +7,12 @@ class Nsfw
 
     set :help => "just type in '!nsfw' and I will provide"
 
-    HIGHLY_NSFW = [
-        "underboob",
-        "burstingout",
-        "downblouse",
-        "curvy",
-        "tittydrop",
-        "nsfw"
-    ]
-
-    MIDDLY_NSFW = [
-        "randomsexiness",
-        "boobies",
-        "boobs",
-        "gonewildcurvy",
-        "LegalTeens",
-        "Hotchickswithtattoos",
-        "SexyButNotPorn",
-        "nude",
-        "Unashamed",
-        "GirlsinTUBEsocks"
-    ]
-
-    match /nsfw$/i, :use_prefix => true
+    match(/nsfw$/i, :use_prefix => true)
     def initialize(*args)
         super
-        if not config.include? "reddit_cookie"
-            raise "This plugin won't run unless you specify a cookie value for reddit [look for the over18 cookie in a nsfw board]"
-        end
+
+        @very_nsfw = config['very_nsfw']
+        @mildly_nsfw = config['mildly_nsfw']
 
         @lastFlush = Time.now.to_i
         @alreadySeen = []
@@ -48,23 +25,23 @@ class Nsfw
             return nil
         end
 
-        board = if Time.now.hour >= 18
-            HIGHLY_NSFW.sample
+        board = if Time.now.hour >= 18 || Time.now.hour <= 7
+            @very_nsfw.sample
         else
-            MIDDLY_NSFW.sample
+            @mildly_nsfw.sample
         end
 
-        open_doc = open("http://reddit.com/r/#{board}" , "Cookie" => "over18=#{config['reddit_cookie']}")
-        links = Nokogiri::HTML(open_doc).css('a.title').to_a
+        open_doc = open("http://reddit.com/r/#{board}.json").read
+        elements = JSON.parse(open_doc)['data']['children']
 
         begin
-            link = getImageFromLinks links
+            link, title = get_data_from_json elements
         end while @alreadySeen.include? link
 
         flushCashIfNeeded
         @lastSeenPerUser[m.user.nick] = Time.now
         @alreadySeen.push link
-        m.reply link
+        m.reply "NSFW ! #{title} : #{link}"
     end
 
     private
@@ -82,12 +59,13 @@ class Nsfw
         end
     end
 
-    def getImageFromLinks links
-        link = links.sample.attribute('href').to_s
-        while link !~ /(jpg|gif|png)$/i
-            link = links.sample.attribute('href').to_s
-        end
+    def get_data_from_json elements
+        begin
+            el = elements.sample['data']
+            link = el['url'].to_s
+            title = el['title'].to_s
+        end while link !~ /(jpg|gif|png)$/i
 
-        return link
+        return link, title
     end
 end
