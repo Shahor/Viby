@@ -14,13 +14,18 @@ class Twitter
       urls.each do |url|
         url = URI.parse url.gsub /#!\//, '' rescue next
         next if not ['http', 'https'].include? url.scheme
-        next if not url.host =~ /twitter\.com/i
+        next if not url.host =~ /^(www\.)?twitter\.com/i
 
         begin
           doc = Nokogiri::HTML(open(url))
 
-          fullname = doc.at("strong.fullname").children.first.content.strip
-          content = doc.at("p.tweet-text").content.strip
+          if url.to_s =~ /\/photo\/\d+/i
+            fullname = doc.at("span.tweet-full-name").children.first.content.strip
+            content = doc.at("div.tweet-text").content.strip
+          else
+            fullname = doc.at("strong.fullname").children.first.content.strip
+            content = doc.at("p.tweet-text").content.strip
+          end
 
           m.reply "#{fullname}: « #{content} »"
         rescue Exception
