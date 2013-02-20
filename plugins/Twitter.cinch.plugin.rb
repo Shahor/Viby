@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 require 'open-uri'
-require 'json'
 
 class Twitter
   include Cinch::Plugin
@@ -23,8 +22,9 @@ class Twitter
             fullname = doc.at("span.tweet-full-name").children.first.content.strip
             content = doc.at("div.tweet-text").content.strip
           else
-            fullname = doc.at("strong.fullname").children.first.content.strip
-            content = doc.at("p.tweet-text").content.strip
+            tweet = doc.at("div.permalink-tweet")
+            fullname = tweet.at("strong.fullname").children.first.content.strip
+            content = tweet.at("p.tweet-text").content.strip
           end
 
           m.reply "#{fullname}: « #{content} »"
