@@ -7,10 +7,19 @@ ROOT = File.dirname(__FILE__)
 
 plugins = []
 
+configFile = File.join(ROOT, 'config.yml')
+if File.exists? configFile
+  config = YAML.load_file(configFile)
+else
+  raise "Config file not found"
+end
+
 Dir[File.join(ROOT, 'plugins', '*.cinch.plugin.rb')].each do |plugin|
   begin
     require plugin
     name = File.basename(plugin).split('.').first
+    next if config.include?('bypassPlugin') && config['bypassPlugin'].include?(name)
+
     klass = Kernel.const_get name
     plugins << klass
   rescue NameError
@@ -20,25 +29,18 @@ Dir[File.join(ROOT, 'plugins', '*.cinch.plugin.rb')].each do |plugin|
   end
 end
 
-configFile = File.join(ROOT, 'config.yml')
-if File.exists? configFile
-  config = YAML.load_file(configFile)
-
-  bot = Cinch::Bot.new do
-    configure do |c|
-      c.nick = config['nick'] || 'viby'
-      c.server = config['server'] || 'localhost'
-      c.channels = config['channels'] || ['#viby']
-      c.password = config['password']
-      c.ssl = Cinch::Configuration::SSL.new use: true if config['ssl']
-      for name, cplugin in config['plugin'] || []
-        c.plugins.options[Kernel.const_get name] = cplugin
-      end
-      c.plugins.plugins = plugins
+bot = Cinch::Bot.new do
+  configure do |c|
+    c.nick = config['nick'] || 'viby'
+    c.server = config['server'] || 'localhost'
+    c.channels = config['channels'] || ['#viby']
+    c.password = config['password']
+    c.ssl = Cinch::Configuration::SSL.new use: true if config['ssl']
+    for name, cplugin in config['plugin'] || []
+      c.plugins.options[Kernel.const_get name] = cplugin
     end
+    c.plugins.plugins = plugins
   end
-
-  bot.start
-else
-  puts "Config file not found"
 end
+
+bot.start

@@ -1,28 +1,16 @@
 nick: viby
 server: localhost
 channels:
- - '#viby'
-# password: something
-# ssl: true
-# plugin:
-#    Question:
-#        appid: XXX
-#    Nsfw:
-#      very_nsfw:
-#          - underboob
-#          - burstingout
-#          - downblouse
-#          - curvy
-#          - tittydrop
-#          - nsfw
-#      mildly_nsfw:
-#          - randomsexiness
-#          - boobies
-#          - boobs
-#          - gonewildcurvy
-#          - LegalTeens
-#          - Hotchickswithtattoos
-#          - SexyButNotPorn
-#          - nude
-#          - Unashamed
-#          - GirlsinTUBEsocks
+    - '#viby'
+password: something
+ssl: true
+plugin:
+#     Question:
+#         appid: XXX
+#     Nsfw:
+#         very_nsfw:
+#             - redditBoardname
+#         mildly_nsfw:
+#             - redditBoardname
+# bypassPlugin:
+#     - pluginName
