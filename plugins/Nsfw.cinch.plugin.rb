@@ -38,10 +38,10 @@ class Nsfw
     end
 
     def execute m
-        # if not userCan? m.user.nick
-        #     m.reply "Oh #{m.user.nick}, you already had your treat today !"
-        #     return nil
-        # end
+        if not userCan? m.user.nick
+            m.reply "Oh #{m.user.nick}, you already had your treat today !"
+            return nil
+        end
 
         board = if Time.now.hour >= 18 || Time.now.hour <= 7
             if @users[:very_nsfw][m.user.nick]
