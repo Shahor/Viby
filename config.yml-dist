@@ -9,8 +9,14 @@ plugin:
 #         appid: XXX
 #     Nsfw:
 #         very_nsfw:
-#             - redditBoardname
+#             redditBoardname:
+#                 - nick1
+#                 - nick2
+#                 # optional nicknames that will be restrained to this board
+#                 # You can restrain a nick to multiples boards
+#             redditBoardname2:
+#             redditBoardname3:
 #         mildly_nsfw:
-#             - redditBoardname
+#             redditBoardname:
 # bypassPlugin:
 #     - pluginName

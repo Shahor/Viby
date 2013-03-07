@@ -11,8 +11,26 @@ class Nsfw
     def initialize(*args)
         super
 
-        @very_nsfw = config['very_nsfw']
-        @mildly_nsfw = config['mildly_nsfw']
+        @very_nsfw = config['very_nsfw'].keys
+        @mildly_nsfw = config['mildly_nsfw'].keys
+
+        # Restriction
+        @users = {
+          :mildly_nsfw => {},
+          :very_nsfw => {}
+        }
+
+        [:very_nsfw, :mildly_nsfw].each do |type|
+          config[type.to_s].each do |name , users|
+            if users
+              @very_nsfw.delete name
+              users.each do |user|
+                puts user
+                @users[type][user].push(name) rescue @users[type][user] = [name]
+              end
+            end
+          end
+        end
 
         @lastFlush = Time.now.to_i
         @alreadySeen = []
@@ -20,15 +38,23 @@ class Nsfw
     end
 
     def execute m
-        if not userCan? m.user.nick
-            m.reply "Oh #{m.user.nick}, you already had your treat today !"
-            return nil
-        end
+        # if not userCan? m.user.nick
+        #     m.reply "Oh #{m.user.nick}, you already had your treat today !"
+        #     return nil
+        # end
 
         board = if Time.now.hour >= 18 || Time.now.hour <= 7
-            @very_nsfw.sample
+            if @users[:very_nsfw][m.user.nick]
+              @users[:very_nsfw][m.user.nick].sample
+            else
+              @very_nsfw.sample
+            end
         else
+          if @users[:mildly_nsfw][m.user.nick]
+            @users[:mildly_nsfw][m.user.nick].sample
+          else
             @mildly_nsfw.sample
+          end
         end
 
         open_doc = open("http://reddit.com/r/#{board}.json").read
