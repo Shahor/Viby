@@ -11,9 +11,6 @@ class Nsfw
     def initialize(*args)
         super
 
-        @very_nsfw = config['very_nsfw'].keys
-        @mildly_nsfw = config['mildly_nsfw'].keys
-
         # Restriction
         @users = {
           :mildly_nsfw => {},
@@ -23,7 +20,7 @@ class Nsfw
         [:very_nsfw, :mildly_nsfw].each do |type|
           config[type.to_s].each do |name , users|
             if users
-              @very_nsfw.delete name
+              config[type.to_s].delete name
               users.each do |user|
                 puts user
                 @users[type][user].push(name) rescue @users[type][user] = [name]
@@ -31,6 +28,9 @@ class Nsfw
             end
           end
         end
+
+        @very_nsfw = config['very_nsfw'].keys
+        @mildly_nsfw = config['mildly_nsfw'].keys
 
         @lastFlush = Time.now.to_i
         @alreadySeen = []
