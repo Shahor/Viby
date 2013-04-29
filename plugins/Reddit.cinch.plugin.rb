@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'open-uri'
+require 'pp'
 
 class Reddit
     attr_accessor :alreadySeen
@@ -17,7 +18,7 @@ class Reddit
     def execute(m, board, type)
         type = (type or 'pic').to_s
         begin
-            open_doc = open("http://reddit.com/r/#{board}.json").read
+            open_doc = open("http://reddit.com/r/#{board}.json?limit=100").read
             elements = JSON.parse(open_doc)['data']['children'] 
         rescue 
             m.reply("Are you sure this subreddit exists?") 
@@ -25,26 +26,27 @@ class Reddit
         end
 
         begin
-            link, title = get_data_from_json(elements, type)
-        end while @alreadySeen.include? link
+            el = get_element(elements, type)
+        end while @alreadySeen.include? el['url'] rescue 
 
-        @alreadySeen.push link
-        m.reply "Random from #{board}: #{title} - #{link}"
+        return m.reply "Sorry, nothing for you :( try typing !r/#{board}#any ?" if el.nil?
+
+        @alreadySeen.push el['url']
+        m.reply "#{el['over_18'] ? 'NSFW - ' : ''}Random from #{board}: #{el['title']} - #{el['url']}"
     end
 
     private
 
-    def get_data_from_json elements, type
+    def get_element elements, type
+        elements.shuffle!
         types = {
             "any" => /.*/i,
             "pic" => /(jpg|gif|png)$/i
         }
         begin
-            el = elements.sample['data']
-            link = el['url'].to_s
-            title = el['title'].to_s
-        end while link !~ types[type]
+            el = elements.pop['data']
+        end while el['url'] !~ types[type] rescue return nil
 
-        return link, title
+        return el
     end
 end
