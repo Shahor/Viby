@@ -1,5 +1,6 @@
 nick: viby
 server: localhost
+#port: 6669
 channels:
     - '#viby'
 password: something
