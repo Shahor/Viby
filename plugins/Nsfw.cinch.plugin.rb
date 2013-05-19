@@ -17,6 +17,10 @@ class Nsfw
           :very_nsfw => {}
         }
 
+        # Prevent empty conf
+        config["very_nsfw"] = {"nsfw" => nil} if config["very_nsfw"].nil?
+        config["mildly_nsfw"] = {"gentlemanboners" => nil} if config["mildly_nsfw"].nil?
+
         [:very_nsfw, :mildly_nsfw].each do |type|
           config[type.to_s].each do |name , users|
             if users
@@ -67,7 +71,7 @@ class Nsfw
         flushCashIfNeeded
         @lastSeenPerUser[m.user.nick] = Time.now
         @alreadySeen.push link
-        m.reply "NSFW ! #{title} : #{link}"
+        m.reply "NSFW! #{title} : #{link} (for #{m.user.nick}, taken from #{board})"
     end
 
     private
