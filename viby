@@ -36,6 +36,7 @@ bot = Cinch::Bot.new do
     c.port = config['port'] || '6667'
     c.channels = config['channels'] || ['#viby']
     c.password = config['password']
+    c.port = config['port']
     c.ssl = Cinch::Configuration::SSL.new use: true if config['ssl']
     for name, cplugin in config['plugin'] || []
       c.plugins.options[Kernel.const_get name] = cplugin

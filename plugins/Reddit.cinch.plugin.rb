@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 require 'open-uri'
-require 'pp'
 
 class Reddit
     attr_accessor :alreadySeen
@@ -13,9 +12,11 @@ class Reddit
     def initialize(*args)
         super
         @alreadySeen = []
+        @blacklist = config['blacklist'] || []
     end
 
     def execute(m, board, type)
+        return m.reply "Nope." if @blacklist.include? board
         type = (type or 'pic').to_s
         begin
             open_doc = open("http://reddit.com/r/#{board}.json?limit=100").read
@@ -25,14 +26,18 @@ class Reddit
             return
         end
 
-        begin
-            el = get_element(elements, type)
-        end while @alreadySeen.include? el['url'] rescue 
+        el = get_element(elements, type)
 
-        return m.reply "Sorry, nothing for you :( try typing !r/#{board}#any ?" if el.nil?
+        if el.nil?
+            if type == "any" 
+                return m.reply "Sorry #{m.user.nick}, the subreddit #{board} seems empty" 
+            else
+                return self.execute(m, board, "any")
+            end
+        end
 
         @alreadySeen.push el['url']
-        m.reply "#{el['over_18'] ? 'NSFW - ' : ''}Random from #{board}: #{el['title']} - #{el['url']}"
+        m.reply "#{el['over_18'] ? 'NSFW - ' : ''}Random from #{board}: #{el['title']} - #{el['url']} (requested by #{m.user.nick})"
     end
 
     private
@@ -45,7 +50,7 @@ class Reddit
         }
         begin
             el = elements.pop['data']
-        end while el['url'] !~ types[type] rescue return nil
+        end while el['url'] !~ types[type] || @alreadySeen.include?(el['url']) rescue return nil
 
         return el
     end
