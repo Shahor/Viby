@@ -19,5 +19,9 @@ plugin:
 #             redditBoardname3:
 #         mildly_nsfw:
 #             redditBoardname:
+#    Reddit:
+#        blacklist:
+#            - spacedicks
+#            - poop
 # bypassPlugin:
 #     - pluginName
