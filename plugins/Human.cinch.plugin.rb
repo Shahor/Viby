@@ -16,6 +16,7 @@ class Human
   def query m
     copycat m
     be_polite m
+    enough_loktar m
   end
 
   def copycat m
@@ -42,7 +43,7 @@ class Human
     user = m.user
     if user == @last_loktar
       @loktar_counter += 1
-      m.reply "Ca suffit #{user}, tu te tais ou JE te tais ! T’es toléré ici !... TOLÉRÉ !" if @copycat_counter == 4
+      m.reply "Ca suffit #{user}, tu te tais ou JE te tais ! T’es toléré ici !... TOLÉRÉ !" if @loktar_counter == 5
     else
       @last_loktar = user
       @loktar_counter = 1
