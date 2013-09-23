@@ -11,6 +11,7 @@ class Human
     @last_copycat = nil
     @loktar_counter = 1
     @last_loktar = nil
+    @loktar_trigger = config['flood_trigger'] || 10
   end
 
   def query m
@@ -43,7 +44,7 @@ class Human
     user = m.user
     if user == @last_loktar
       @loktar_counter += 1
-      m.reply "Ca suffit #{user}, tu te tais ou JE te tais ! T’es toléré ici !... TOLÉRÉ !" if @loktar_counter == 5
+      m.reply "Ca suffit #{user}, tu te tais ou JE te tais ! T’es toléré ici !... TOLÉRÉ !" if @loktar_counter == @loktar_trigger
     else
       @last_loktar = user
       @loktar_counter = 1
