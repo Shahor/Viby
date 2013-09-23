@@ -27,5 +27,7 @@ plugin:
 #        apikey: AIzaSyBFsbs-N5L4_JAlnv-Lrdqke7rVmvtMOuc
 #        cx: 009311277031439086591:kr2hna7q3yo
 #        See https://developers.google.com/custom-search/v1/using_rest?hl=fr#WorkingResults
+#    Human:
+#        flood_trigger: 10
 # bypassPlugin:
 #     - pluginName
