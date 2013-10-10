@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'open-uri'
-require 'JSON'
+require 'json'
 require 'base64'
 
 class Caniuse
