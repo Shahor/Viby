@@ -4,31 +4,20 @@ require 'open-uri'
 class Hearthstone
   include Cinch::Plugin
 
-  match /(http:\/\/(www\.)?hearthhead.com\/card=[0-9]+)/, :use_prefix => false
+  match /(?:card) (.*)/i 
 
-  def execute m
-    urls = m.message.split.grep URI.regexp
 
-    if urls.any?
-      urls.each do |url|
-        url = URI.parse url
-        next if not url.host =~ /^(www\.)?hearthhead\.com/
-
-        begin
-          doc = Nokogiri::HTML(open(url))
-
-          atq = doc.css("span.hearthstone-attack").first
-          pv = doc.css("span.hearthstone-health").first
-          cost = doc.css("span.hearthstone-cost").first
-
-          name = doc.css("meta[property='og:title']").first['content']
-          desc = doc.css("meta[property='og:description']").first['content']
-
-          m.reply "(#{cost}) #{name} [#{atq}/#{pv}] : #{desc}"
-        rescue Exception
-          m.reply "Sorry, some murlocs are in your url :/"
-        end
+  def execute m, q
+    host = 'http://www.hearthpwn.com'
+    begin
+      q.gsub!(/ /, '+')
+      doc = Nokogiri::HTML(open("#{host}/cards?filter-name=#{URI::encode(q)}"))
+      cards = doc.css(".visual-details-cell")
+      cards.each do |card|
+        m.reply(card.css("h3").children.first.content + " - " + host + card.css("h3").children.first['href'])
       end
+    rescue
+      m.reply("Je suis perdu dans le néant distordu :(")
     end
   end
 
