@@ -4,7 +4,7 @@ require 'open-uri'
 class Hearthstone
   include Cinch::Plugin
 
-  match /(http:\/\/(www\.)?hearthhead.com\/card=[a-zA-Z0-9]+)/, :use_prefix => false
+  match /(http:\/\/(www\.)?hearthhead.com\/card=[0-9]+)/, :use_prefix => false
 
   def execute m
     urls = m.message.split.grep URI.regexp
