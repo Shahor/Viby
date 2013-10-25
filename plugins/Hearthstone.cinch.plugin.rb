@@ -24,7 +24,7 @@ class Hearthstone
       begin
         doc = Nokogiri::HTML(open("#{@hsHost}/cards?filter-name=#{CGI.escape(q)}"))
         cards = doc.css(".visual-details-cell")
-        return m.reply("Sorry #{m.user.nick}, there is no results :/") if cards.empty?
+        return m.reply("Sorry #{m.user.nick}, there is no result :/") if cards.empty?
         return showCard(m, cards.first.css("h3").children.first['href']) if cards.length == 1
         m.reply("#{m.user.nick} asks for « #{q} »")
         cards.each do |card|
