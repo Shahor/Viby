@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 require 'open-uri'
 require 'nokogiri'
+require 'cgi'
 
 class Hearthstone
   include Cinch::Plugin
@@ -21,15 +22,13 @@ class Hearthstone
     @flooders[m.user.nick] = Time.now
     if q.to_i == 0 and q.length > 1
       begin
-        doc = Nokogiri::HTML(open("#{@hsHost}/cards?filter-name=#{URI::encode(q.gsub(/ /, '+'))}"))
+        doc = Nokogiri::HTML(open("#{@hsHost}/cards?filter-name=#{CGI.escape(q)}"))
         cards = doc.css(".visual-details-cell")
-        return m.reply("Sorry #{m.user.nick}, there is no results :/") if cards.length == 0
-        if cards.length == 1
-          return showCard(m, cards.first.css("h3").children.first['href'])
-        end
+        return m.reply("Sorry #{m.user.nick}, there is no results :/") if not cards.empty?
+        return showCard(m, cards.first.css("h3").children.first['href']) if cards.length == 1
         m.reply("#{m.user.nick} asks for « #{q} »")
         cards.each do |card|
-          m.reply(card.css("h3").children.first.content + " - " + @hsHost + card.css("h3").children.first['href'])
+          m.reply("#{card.css("h3").children.first.content} - #{@hsHost}#{card.css("h3").children.first['href']}")
         end
       rescue
         m.reply("Je suis perdu dans le néant distordu :(")
@@ -41,21 +40,23 @@ class Hearthstone
 
   def showCard m, q
     begin
-      doc = Nokogiri::HTML(open("#{@hsHost}/cards/#{q.gsub(/[^0-9]/, '')}"))
-      cname = doc.css("h2.caption").first.content
-      cdesc = doc.css(".card-info > p").first.content
-      cinfo = doc.css(".infobox > ul").children
-      infos = []
-      cinfo.each do |info|
-          infos.push(info.children.css("a").first.content) rescue next
+      q.scan(/\d+/).each do |id|
+        doc = Nokogiri::HTML(open("#{@hsHost}/cards/#{id}"))
+        cname = doc.css("h2.caption").first.content
+        cdesc = doc.css(".card-info > p").first.content rescue ''
+        cinfo = doc.css(".infobox > ul").children
+        infos = []
+        cinfo.each do |info|
+            infos.push(info.children.css("a").first.content) rescue next
+        end
+        infos.pop
+        m.reply("Here is « #{cname} », #{m.user.nick}")
+        m.reply(cdesc) if not cdesc.empty?
+        m.reply(infos.join(' / '))
+        m.reply("More info : http://hearthstone.gamepedia.com/#{URI::encode(cname)}")
       end
-      infos.pop
-      m.reply("Here is « #{cname} », #{m.user.nick}")
-      m.reply(cdesc)
-      m.reply(infos.join(' / '))
-      m.reply("More info : http://hearthstone.gamepedia.com/#{URI::encode(cname)}")
     rescue
-      m.reply("Argh, no such card :/")
+      m.reply("Argh, no such card for #{id}:/")
     end
   end
 
