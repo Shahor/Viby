@@ -52,7 +52,7 @@ class Hearthstone
         infos.pop
         m.reply("Here is « #{cname} », #{m.user.nick}")
         m.reply("#{showStat(cname)}") 
-        m.reply(cdesc) if not cdesc.empty?
+        m.reply("« #{cdesc} »") if not cdesc.empty?
         m.reply(infos.join(' / '))
         m.reply("More info : http://hearthstone.gamepedia.com/#{URI::encode(cname)}")
       end
