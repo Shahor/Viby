@@ -6,6 +6,7 @@ class Hearthstone
   include Cinch::Plugin
 
   match /(?:card) (.*)/i 
+  set :help => '!card query to make a search | !card ID to show a card' 
 
   def initialize(*args)
     super
