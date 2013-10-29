@@ -52,9 +52,9 @@ class Hearthstone
         infos.pop
         m.reply("Here is « #{cname} », #{m.user.nick}")
         m.reply("#{showStat(cname)}") 
-        m.reply("« #{cdesc} »") if not cdesc.empty?
-        m.reply(infos.join(' / '))
-        m.reply("More info : http://hearthstone.gamepedia.com/#{URI::encode(cname)}")
+        m.reply("« #{cdesc.squeeze(' ')} »") if not cdesc.empty?
+        m.reply(infos.join(' / ').squeeze(' '))
+        m.reply("More info : #{@hsHost}/cards/#{id}")
       end
     rescue
       m.reply("Argh, no such card for #{id}:/")
@@ -66,7 +66,7 @@ class Hearthstone
     stats = []
     doc.css("table.infobox").first.children.each do |infos|
       infos.children.each do |row|
-        stats.push(row.content.gsub(/( |\n)/, '')) if row.content.strip.match(/(Cost|Attack|HP|\d+$)/)
+        stats.push(row.content.gsub(/( |\n)/, '')) if row.content.strip.match(/(Cost|Attack|HP|^\d+$)/)
       end
     end
     statsStr = ''
