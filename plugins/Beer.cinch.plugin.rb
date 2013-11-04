@@ -20,9 +20,10 @@ class Beer
     "http://www.beer-universe.com/images/articles/357/beer_food_bazaar.jpg"
   ]
 
-  match /(^|\s)(beer|bi(e|è)re|boire|ap(e|é)ro)/i, :use_prefix => false
+  match /\"(.*)\".(to_beer|to_b)/i, :use_prefix => false, :method => :brewerydb
+  match /(^|\s)(beer|bi(e|è)re|boire|ap(e|é)ro)/i, :use_prefix => false, :method => :timer
 
-  def execute m
+  def timer m
     if Time.now.hour <= 17 and Time.now.hour >= 2
       m.reply "uh oh ... "
       m.reply NOPE.sample
@@ -30,4 +31,41 @@ class Beer
       m.reply YAY.sample
     end
   end
+
+  def brewerydb m, beer_name
+
+    return unless !config['apikey'].nil?
+
+    base_url = 'http://api.brewerydb.com/v2/search'
+    query    = URI::encode(beer_name)
+    document = open("#{base_url}?q=#{query}&key=#{config['apikey']}&type=beer").read
+    beers    = JSON.parse(document)
+
+    if beers['data'].nil?
+      m.reply "Je connais pas la #{beer_name}."
+      return;
+    end
+
+    if beers['data'][0]['name'].downcase == beer_name.downcase \
+       or beers['data'].count() < 2
+
+      if beers['data'][0]['description'].nil?
+        m.reply "Je connais seulement de nom la #{beer_name}."
+        return
+      else
+        m.reply beers['data'][0]['description'].capitalize
+        return
+      end
+
+    end
+
+    if beers['data'].count > 1
+      m.reply "#{beer_name.capitalize} ? Tu veux dire la :"
+      beers['data'][0..3].each do |beer|
+        m.reply beer['name'] + ' ?'
+      end
+    end
+
+  end
+
 end

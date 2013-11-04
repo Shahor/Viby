@@ -6,6 +6,9 @@ channels:
 password: something
 ssl: true
 plugin:
+#      Beer:
+#          apikey: XXX
+#          see http://www.brewerydb.com/developers
 #     Question:
 #         appid: XXX
 #     Nsfw:
