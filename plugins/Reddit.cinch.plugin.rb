@@ -9,35 +9,42 @@ class Reddit
     set :help => "Usage:
 !r/(subreddit)[#(type)] : pick an item from a subreddit.
 !r?(search)[#(type)] : pick an item from a search.
+!u/(user) : pick an item from a user' submissions
 Where type could be
  - any: Any type
  - pic: only a picture
  - sub: make a subreddit search (only for search)"
 
-    match(/r(\/|\?)(.+?)(?:#(any|url|pic|sub))?$/, :use_prefix => true)
+    match(/(u|r)(\/|\?)(.+?)(?:#(any|url|pic|sub))?$/, :use_prefix => true)
     def initialize(*args)
         super
         @alreadySeen = []
         @blacklist = config['blacklist'] || []
     end
 
-    def execute(m, search, board, type)
+    def execute(m, category, search, board, type)
         return m.reply "Nope." if @blacklist.include? board
         type = (type or 'pic').to_s
         is_search = search == '?'
         is_subreddit_search = is_search && type == 'sub'
+        is_board_search = category == 'r'
         board_uri = URI.escape(board)
 
-        if is_subreddit_search
-            url = "http://www.reddit.com/subreddits/search.json?q=#{board_uri}&limit=10"
-        elsif is_search
-            url = "http://www.reddit.com/search.json?q=#{board_uri}&limit=100"
-        else
-            if type == 'sub'
-                m.reply("Sorry, can't do that")
-                return
+        if is_board_search
+            if is_subreddit_search
+                url = "http://www.reddit.com/subreddits/search.json?q=#{board_uri}&limit=10"
+            elsif is_search
+                url = "http://www.reddit.com/search.json?q=#{board_uri}&limit=100"
+            else
+                if type == 'sub'
+                    m.reply("Sorry, can't do that")
+                    return
+                end
+                url = "http://reddit.com/r/#{board_uri}.json?limit=100"
             end
-            url = "http://reddit.com/r/#{board_uri}.json?limit=100"
+
+        else
+            url = "http://reddit.com/user/#{board_uri}/submitted/.json?limit=100"
         end
 
         begin
@@ -47,6 +54,7 @@ Where type could be
             m.reply("Are you sure this subreddit exists?")
             return
         end
+
 
         if is_subreddit_search
             if elements.empty?
