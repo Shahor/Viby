@@ -70,7 +70,7 @@ Where type could be
 
             @alreadySeen.push el['url']
             if is_search
-                m.reply "#{el['over_18'] ? 'NSFW - ' : ''}Random from '#{board}' search: #{el['title']} - #{el['url']} (requested by #{m.user.nick}, from board #{el['subreddit']}"
+                m.reply "#{el['over_18'] ? 'NSFW - ' : ''}Random from '#{board}' search: #{el['title']} - #{el['url']} (requested by #{m.user.nick}, from board #{el['subreddit']})"
             else
                 m.reply "#{el['over_18'] ? 'NSFW - ' : ''}Random from #{board}: #{el['title']} - #{el['url']} (requested by #{m.user.nick})"
             end
