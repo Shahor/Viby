@@ -12,7 +12,7 @@ class Wat
   end
 
   def query m
-    if m.message.match /^(wa+t|quoi)(\?*)$/i
+    if m.message.match /^(wa+t|quoi)\s*(\?*)$/i
       m.reply "IL A DIT: \"#{@previous.upcase}\""
     end
     @previous = m.message.strip
