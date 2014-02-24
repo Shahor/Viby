@@ -14,9 +14,9 @@ class Wat
   def query m
     chan = m.channel.name[1..-1]
     if m.message.match /^(wa+t|quoi)\s*(\?*)$/i
-      m.reply "IL A DIT: \"#{@previous[:chan].upcase}\", #{m.user}" if @previous[:chan]
+      m.reply "IL A DIT: \"#{@previous[chan].upcase}\", #{m.user}" if @previous[chan]
     end
-    @previous[:chan] = m.message.strip
+    @previous[chan] = m.message.strip
   end
 
 end
