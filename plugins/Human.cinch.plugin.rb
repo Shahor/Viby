@@ -35,7 +35,7 @@ class Human
   def be_polite m
     if m.message =~ /#{self.bot.nick}/i
       bot = Cleverbot::Client.new
-      m.reply bot.write m.message.sub!(/#{self.bot.nick}/i, '')
+      m.reply "#{m.user}: #{bot.write m.message.sub!(/#{self.bot.nick}/i, '')}"
     end
   end
 
