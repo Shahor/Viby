@@ -2,6 +2,7 @@
 
 class Human
   include Cinch::Plugin
+  require 'cleverbot'
 
   listen_to :channel, method: :query
 
@@ -33,10 +34,8 @@ class Human
 
   def be_polite m
     if m.message =~ /#{self.bot.nick}/i
-      if m.message =~ /tg|gueule|saoule|ferme/i
-        return m.reply "C'est toi arrêtez !"
-      end
-      return m.reply "Plaît-il ?"
+      bot = Cleverbot::Client.new
+      m.reply "#{m.user}: #{bot.write m.message.sub!(/#{self.bot.nick}/i, '')}"
     end
   end
 
