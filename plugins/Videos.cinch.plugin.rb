@@ -12,7 +12,7 @@ class Videos
     if urls.any?
       urls.each do |url|
         url = URI.parse(url) rescue next
-        next if not url.scheme == 'http'
+        next unless ['http', 'https'].include?(url.scheme)
 
         if /(www\.)?(youtube|vimeo|dailymotion|youtu).*/.match url.host
           doc = Nokogiri::HTML(open(url))
