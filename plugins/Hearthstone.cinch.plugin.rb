@@ -31,7 +31,7 @@ class Hearthstone
           m.reply("#{card.css("h3").children.first.content} - #{@hsHost}#{card.css("h3").children.first['href']}")
         end
       rescue
-        m.reply("Je suis perdu dans le néant distordu :(")
+        m.reply("Mrglglglgl! (translation : I've catch an unknown error.)")
       end
     else
       showCard(m, q)
@@ -44,16 +44,9 @@ class Hearthstone
         doc = Nokogiri::HTML(open("#{@hsHost}/cards/#{id}"))
         cname = doc.css("h2.caption").first.content
         cdesc = doc.css(".card-info > p").first.content rescue ''
-        cinfo = doc.css(".infobox > ul").children
-        infos = []
-        cinfo.each do |info|
-            infos.push(info.children.css("a").first.content) rescue next
-        end
-        infos.pop
         m.reply("Here is « #{cname} », #{m.user.nick}")
         m.reply("#{showStat(cname)}") 
         m.reply("« #{cdesc.squeeze(' ')} »") if not cdesc.empty?
-        m.reply(infos.join(' / ').squeeze(' '))
         m.reply("More info : #{@hsHost}/cards/#{id}")
       end
     rescue
