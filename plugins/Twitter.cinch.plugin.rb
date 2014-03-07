@@ -25,6 +25,11 @@ class Twitter
             tweet = doc.at("div.permalink-tweet")
             fullname = tweet.at("strong.fullname").children.first.content.strip
             content = tweet.at("p.tweet-text").content.strip
+            images = doc.css("[data-element-context=platform_photo_card] img")
+            content.sub!(/\bpic\.twitter\.com\/\w+/) { |match|
+                image = images.shift
+                image && image['src'] || match
+            }
           end
 
           m.reply "#{fullname}: « #{content} »"
