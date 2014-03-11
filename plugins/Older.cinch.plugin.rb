@@ -26,7 +26,7 @@ class Older
 
   def initialize(*args)
     super
-    @links = {}
+    @links = Hash.new { |hsh, key| hsh[key] = {} }
   end
 
   def considerOlding(m)
@@ -36,15 +36,19 @@ class Older
       urls.each do |url|
         next if not url =~ /^http/
 
-        if @links.key? url
-          m.reply PICTURES.sample if rand <= 0.33
-          m.reply SENTENCES.sample % @links[url]
+        channel_links = @links[m.channel.name]
+
+        if channel_links.key? url
+          if channel_links[url][:author] != m.user.nick
+            m.reply PICTURES.sample if rand <= 0.33
+            m.reply SENTENCES.sample % channel_links[url]
+          end
         else
-          @links[url] = {
+          channel_links[url] = {
             author: m.user.nick,
             date: Time.now.strftime("%Y-%m-%d %H:%M:%S"),
           }
-          @links.shift if @links.size > MAX
+          channel_links.shift if channel_links.size > MAX
         end
       end
     end
