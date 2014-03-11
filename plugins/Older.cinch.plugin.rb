@@ -39,8 +39,10 @@ class Older
         channel_links = @links[m.channel.name]
 
         if channel_links.key? url
-          m.reply PICTURES.sample if rand <= 0.33
-          m.reply SENTENCES.sample % channel_links[url]
+          if channel_links[url][:author] != m.user.nick
+            m.reply PICTURES.sample if rand <= 0.33
+            m.reply SENTENCES.sample % channel_links[url]
+          end
         else
           channel_links[url] = {
             author: m.user.nick,
