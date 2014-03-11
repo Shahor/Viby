@@ -32,5 +32,7 @@ plugin:
 #        See https://developers.google.com/custom-search/v1/using_rest?hl=fr#WorkingResults
 #    Human:
 #        flood_trigger: 10
+#    FiveHundredPx:
+#        consumer_key:
 # bypassPlugin:
 #     - pluginName
