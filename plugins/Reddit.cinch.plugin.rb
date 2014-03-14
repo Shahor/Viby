@@ -3,6 +3,7 @@ require 'open-uri'
 
 class Reddit
     attr_accessor :alreadySeen
+    attr_accessor :sauce
 
     include Cinch::Plugin
     
@@ -15,15 +16,17 @@ Where type could be
  - pic: only a picture
  - sub: make a subreddit search (only for search)"
 
-    match(/(u|r)(\/|\?)(.+?)(?:#(any|url|pic|sub))?$/, :use_prefix => true)
+    match(/(sauce|u|r)(?:(\/|\?)(.+?)(?:#(any|url|pic|sub))?)?$/, :use_prefix => true)
     def initialize(*args)
         super
         @alreadySeen = []
+        @sauce = {}
         @blacklist = config['blacklist'] || []
     end
 
     def execute(m, category, search, board, type)
         return m.reply "Nope." if @blacklist.include? board
+        return m.reply "#{m.user.nick}: http://reddit.com#{@sauce[m.user.nick]}" if category == 'sauce'
         type = (type or 'pic').to_s
         is_search = search == '?'
         is_subreddit_search = is_search && type == 'sub'
@@ -77,6 +80,7 @@ Where type could be
             end
 
             @alreadySeen.push el['url']
+            @sauce[m.user.nick] = el['permalink']
             if is_search
                 m.reply "#{el['over_18'] ? 'NSFW - ' : ''}Random from '#{board}' search: #{el['title']} - #{el['url']} (requested by #{m.user.nick}, from board #{el['subreddit']})"
             else
