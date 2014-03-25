@@ -6,7 +6,7 @@ class FiveHundredPx
   include Cinch::Plugin
 
   API_URL = 'https://api.500px.com/v1/photos'
-  match /500(?:\s+([\w\s]+))?/i, :use_prefix => false
+  match /500(?:\s+([\w\s]+))?/i, :use_prefix => true
 
   set :help => "!500 [category] (see https://github.com/500px/api-documentation/blob/master/basics/formats_and_terms.md#categories for infos)"
 
