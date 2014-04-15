@@ -8,7 +8,7 @@ class Spotify
   include Cinch::Plugin
 
   match /(spotify:(album|track|artist):[a-zA-Z0-9]+)/, :use_prefix => false
-  match /(http:\/\/open.spotify.com\/(album|track|artist)\/[a-zA-Z0-9]+)/, :use_prefix => false
+  match /(https?:\/\/(open|play).spotify.com\/(album|track|artist)\/[a-zA-Z0-9]+)/, :use_prefix => false
 
   def execute m, uri, type
     data = JSON.parse(open("http://ws.spotify.com/lookup/1/.json?uri=#{uri}").read)
