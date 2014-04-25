@@ -15,6 +15,7 @@ class Older
         link TEXT, 
         who TEXT, 
         tag TEXT, 
+        chan TEXT, 
         date DATETIME
       );
     SQL
@@ -23,7 +24,7 @@ class Older
 
   def considerOlding(m)
     if m.message =~ /^!url ([^\s]*)(\s(\d+))?/
-      old = @db.execute "SELECT * FROM urls WHERE link LIKE ?", "%#{$1}%"
+      old = @db.execute "SELECT * FROM urls WHERE link LIKE ? AND chan = ?", "%#{$1}%", m.channel.name
       if !old.empty?
         # Take last url by default
         idx = $3 ? $3.to_i - 1 : old.length - 1
@@ -38,11 +39,11 @@ class Older
       urls = m.message.split.grep URI.regexp
       if urls.any?
         urls.each do |url|
-          is_old = @db.execute "SELECT * FROM urls WHERE link = ?", url
+          is_old = @db.execute "SELECT * FROM urls WHERE link = ? AND chan = ?", url, m.channel.name
           if !is_old.empty?
             m.reply "Old"
           else 
-            @db.execute "INSERT INTO urls (link, who, tag, date) VALUES (?, ?, ?, ?)", url, m.user.nick, "", DateTime.now.strftime('%d/%m/%Y %H:%M:%S')
+            @db.execute "INSERT INTO urls (link, who, tag, date, chan) VALUES (?, ?, ?, ?, ?)", url, m.user.nick, "", DateTime.now.strftime('%d/%m/%Y %H:%M:%S'), m.channel.name
           end
         end
       end
