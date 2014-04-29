@@ -1,4 +1,3 @@
-require 'open-uri'
 require 'sqlite3'
 
 class Older
@@ -36,7 +35,7 @@ class Older
         m.reply "No results"
       end
     else
-      urls = m.message.split.grep URI.regexp
+      urls = m.message.split.grep /^http(s)?/
       if urls.any?
         urls.each do |url|
           is_old = @db.execute "SELECT * FROM urls WHERE link = ? AND chan = ?", url, m.channel.name
