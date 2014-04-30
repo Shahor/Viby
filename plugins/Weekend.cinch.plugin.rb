@@ -5,6 +5,8 @@ require 'nokogiri'
 class Weekend
   include Cinch::Plugin
 
+  set :help => '!weekend | Try it.'
+
   match /weekend$/i
 
   def execute m
