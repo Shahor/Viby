@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'open-uri'
+require 'nokogiri'
 
 class Weekend
   include Cinch::Plugin
