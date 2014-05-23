@@ -1,0 +1,17 @@
+You can use docker to rapidly deploy and use viby !
+
+First you need the "base non-configured image" : you can build it with the Dockerfile provided or pull it from my docker index repo.
+
+With Dockerfile : place it in an empty directory then :
+- docker build -t="viby" .
+- docker run --name myviby_container -i -t viby bash
+
+OR directly from my repo :
+- docker run --name myviby_container -i -t arnaudm/viby bash
+
+Then you can edit config.yml, exit, commit your change to keep your own configured image, and run it :
+
+- vim config.yml
+- exit
+- docker commit myviby_container private/myviby
+- docker run -d -t private/myviby ruby viby
