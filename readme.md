@@ -2,6 +2,7 @@
 ```bash
 git clone https://github.com/Shahor/Viby.git && cd Viby
 cp config.yml-dist config.yml
+bundle # Provided the bundler gem is installed ( If not : gem install bundler)
 # Edit the config as needed
 ./viby
 ```
