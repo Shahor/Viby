@@ -18,8 +18,6 @@ class MsgTimer
     def timed
         time = DateTime.now.strftime("%H:%M")
         for message in @messages
-            Channel("#viby").send "tests #{message['time']} - #{time}"
-
             if message['time'] == time
                 Channel(message['chan']).send message['msg']
             end
