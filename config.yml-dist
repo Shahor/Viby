@@ -36,3 +36,8 @@ plugin:
 #        consumer_key:
 # bypassPlugin:
 #     - pluginName
+#    MsgTimer:
+#        -
+#            time: "11:30"
+#            chan: "#viby"
+#            msg : "@all meeting"
