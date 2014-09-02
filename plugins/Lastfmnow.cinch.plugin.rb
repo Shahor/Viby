@@ -25,7 +25,7 @@ class Lastfmnow
         raise "Hum, this user hasn't listened music since a while !"
       end
 
-      message = "Dernère chanson écoutée par " + username + " : "
+      message = "Dernière chanson écoutée par " + username + " : "
       m.reply message + response[0]["artist"]["content"] + " - " + response[0]["name"]
 
     rescue Exception => e
