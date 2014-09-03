@@ -38,6 +38,7 @@ plugin:
 #     - pluginName
 #    MsgTimer:
 #        -
+#            format: "%H:%M" # format of the time given below, see ruby strftime doc
 #            time: "11:30"
 #            chan: "#viby"
 #            msg : "@all meeting"

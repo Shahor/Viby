@@ -16,8 +16,8 @@ class MsgTimer
 
     timer 60, method: :timed
     def timed
-        time = DateTime.now.strftime("%H:%M")
         for message in @messages
+            time = DateTime.now.strftime(message['format'])
             if message['time'] == time
                 Channel(message['chan']).send message['msg']
             end
