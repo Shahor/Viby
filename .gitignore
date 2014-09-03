@@ -3,3 +3,4 @@ config.yml
 .DS_Store
 Gemfile.lock
 old.db
+.idea

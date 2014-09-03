@@ -1,4 +1,5 @@
 source "http://rubygems.org"
+gem "lastfm"
 gem "cinch"
 gem "curb"
 gem "nokogiri"
