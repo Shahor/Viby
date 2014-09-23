@@ -19,7 +19,7 @@ class Giphy
       result = JSON.parse(repasa)
       return m.reply "Pas de résultats, pas de gif. Pas de gif, pas de gif." if result['pagination']['total_count'] == 0
       res = result['data'].sample
-      m.reply "#{res['images']['original']['url']}  (from #{res['source']})"
+      m.reply "#{res['images']['original']['url']}  (from #{res['source']}, Powered By Giphy)"
     rescue 
       m.reply("Je planta :(") 
       return
