@@ -34,5 +34,7 @@ plugin:
 #        flood_trigger: 10
 #    FiveHundredPx:
 #        consumer_key:
+#    Giphy:
+#       apikey: dc6zaTOxFJmzC
 # bypassPlugin:
 #     - pluginName
