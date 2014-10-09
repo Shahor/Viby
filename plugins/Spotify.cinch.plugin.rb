@@ -10,10 +10,10 @@ class Spotify
   match /(spotify:(album|track|artist):[a-zA-Z0-9]+)/, :use_prefix => false
   match /(https?:\/\/(open|play).spotify.com\/(album|track|artist)\/[a-zA-Z0-9]+)/, :use_prefix => false
 
-  def execute m, uri, type
+  def execute m, uri
     data = JSON.parse(open("http://ws.spotify.com/lookup/1/.json?uri=#{uri}").read)
 
-    msg = case type
+    msg = case data['info']['type']
           when /artist/
             "Artist: #{data['artist']['name']}"
           when /album/
