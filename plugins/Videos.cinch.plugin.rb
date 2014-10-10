@@ -15,7 +15,7 @@ class Videos
         next unless ['http', 'https'].include?(url.scheme)
 
         if /(www\.)?(youtube|vimeo|dailymotion|youtu).*/.match url.host
-          doc = Nokogiri::HTML(open(url))
+          doc = Nokogiri::HTML(open(url), nil, 'utf-8')
           m.reply "Video: #{doc.at('meta[@property="og:title"]')['content']}"
         end
 
