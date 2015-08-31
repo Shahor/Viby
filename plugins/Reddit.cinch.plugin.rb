@@ -43,7 +43,7 @@ Where type could be
                     m.reply("Sorry, can't do that")
                     return
                 end
-                url = "http://reddit.com/r/#{board_uri}.json?limit=100"
+                url = "https://reddit.com/r/#{board_uri}.json?limit=100"
             end
 
         else
