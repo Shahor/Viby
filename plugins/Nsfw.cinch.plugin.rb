@@ -61,7 +61,7 @@ class Nsfw
           end
         end
 
-        open_doc = open("http://reddit.com/r/#{board}.json").read
+        open_doc = open("https://www.reddit.com/r/#{board}.json").read
         elements = JSON.parse(open_doc)['data']['children']
 
         begin

@@ -26,7 +26,7 @@ Where type could be
 
     def execute(m, category, search, board, type)
         return m.reply "Nope." if @blacklist.include? board
-        return m.reply "#{m.user.nick}: http://reddit.com#{@sauce[m.user.nick]}" if category == 'sauce'
+        return m.reply "#{m.user.nick}: https://www.reddit.com#{@sauce[m.user.nick]}" if category == 'sauce'
         type = (type or 'pic').to_s
         is_search = search == '?'
         is_subreddit_search = is_search && type == 'sub'
@@ -35,19 +35,19 @@ Where type could be
 
         if is_board_search
             if is_subreddit_search
-                url = "http://www.reddit.com/subreddits/search.json?q=#{board_uri}&limit=10"
+                url = "https://www.reddit.com/subreddits/search.json?q=#{board_uri}&limit=10"
             elsif is_search
-                url = "http://www.reddit.com/search.json?q=#{board_uri}&limit=100"
+                url = "https://www.reddit.com/search.json?q=#{board_uri}&limit=100"
             else
                 if type == 'sub'
                     m.reply("Sorry, can't do that")
                     return
                 end
-                url = "https://reddit.com/r/#{board_uri}.json?limit=100"
+                url = "https://www.reddit.com/r/#{board_uri}.json?limit=100"
             end
 
         else
-            url = "http://reddit.com/user/#{board_uri}/submitted/.json?limit=100"
+            url = "https://www.reddit.com/user/#{board_uri}/submitted/.json?limit=100"
         end
 
         begin
