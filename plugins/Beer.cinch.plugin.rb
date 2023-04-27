@@ -6,8 +6,8 @@ class Beer
   include Cinch::Plugin
 
   NOPE = [
-    "http://www.zendette.com/wp-content/uploads/2010/04/nobeer-lg.jpg",
     "http://2.bp.blogspot.com/_X0jGKQDVKio/Sbup-pbiZaI/AAAAAAAABFE/3kkr__pFU78/s400/no_beer_sign200.jpg",
+    "http://www.zendette.com/wp-content/uploads/2010/04/nobeer-lg.jpg",
     "http://2.bp.blogspot.com/-fA84ad9QChw/TtR8UI6Om_I/AAAAAAAAB4o/hJovWkQNIUc/s1600/nobeer.jpg",
     "http://cityofbyroncity.files.wordpress.com/2012/03/no-beer.jpg"
   ]
