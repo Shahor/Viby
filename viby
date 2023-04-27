@@ -18,6 +18,7 @@ Dir[File.join(ROOT, 'plugins', '*.cinch.plugin.rb')].each do |plugin|
   begin
     require plugin
     name = File.basename(plugin).split('.').first
+
     next if config.include?('bypassPlugin') && config['bypassPlugin'].include?(name)
 
     klass = Kernel.const_get name
